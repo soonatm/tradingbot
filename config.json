@@ -1,0 +1,22 @@
+{
+  "dex_screener_api_url": "https://api.dexscreener.com/latest/dex/tokens/",
+  "pocket_universe_api_url": "https://api.pocketuniverse.ai/v1/analyze",
+  "pocket_universe_api_key": "your_api_key_here",
+  "rugcheck_api_url": "https://api.rugcheck.xyz/v1/token",
+  "database_uri": "postgresql://user:password@localhost:5432/dex_data",
+  "update_interval": 300,
+  "filters": {
+    "min_liquidity_usd": 10000,
+    "max_price_change_24h": 0.5,
+    "max_fake_volume_percentage": 50
+  },
+  "blacklist": {
+    "coins": ["0xRuggedToken1", "0xRuggedToken2"],
+    "devs": ["0xRuggedDev1", "0xRuggedDev2"]
+  },
+  "telegram": {
+    "bot_token": "your_telegram_bot_token",
+    "chat_id": "your_chat_id",
+    "bonkbot_token": "your_bonkbot_token"
+  }
+}

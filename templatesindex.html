@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trading Bot Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Trading Bot Dashboard</h1>
+
+    <h2>Filters</h2>
+    <form id="filter-form">
+        <label for="min-liquidity">Min Liquidity (USD):</label>
+        <input type="number" id="min-liquidity" name="min_liquidity_usd" value="{{ filters.min_liquidity_usd }}">
+        
+        <label for="max-price-change">Max Price Change (24h):</label>
+        <input type="number" id="max-price-change" name="max_price_change_24h" value="{{ filters.max_price_change_24h }}">
+        
+        <button type="submit">Update Filters</button>
+    </form>
+
+    <h2>Logs</h2>
+    <div id="logs">
+        {% for log in logs %}
+            <p>{{ log }}</p>
+        {% endfor %}
+    </div>
+
+    <h2>Actions</h2>
+    <button id="start-bot">Start Bot</button>
+
+    <script>
+        // Update filters
+        document.getElementById("filter-form").onsubmit = async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const filters = Object.fromEntries(formData.entries());
+            const response = await fetch("/update_filters", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(filters),
+            });
+            alert("Filters updated!");
+        };
+
+        // Start bot
+        document.getElementById("start-bot").onclick = async () => {
+            const response = await fetch("/start_bot", { method: "POST" });
+            alert("Bot started!");
+        };
+
+        // Fetch logs periodically
+        setInterval(async () => {
+            const response = await fetch("/get_logs");
+            const logs = await response.json();
+            document.getElementById("logs").innerHTML = logs.map(log => `<p>${log}</p>`).join("");
+        }, 5000);
+    </script>
+</body>
+</html>
